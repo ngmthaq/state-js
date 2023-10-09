@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="./assets/icon.ico" type="image/x-icon" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <form id="form">
+        <input type="text" id="input" />
+        <button id="button" type="submit">Add</button>
+      </form>
+      <br />
+      <ul id="list"></ul>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="./build/state-js.min.js"></script>
+    <script>
+      $(function () {
+        const input = new StateJS({ value: "", bindingInput: "input" });
+        const todoList = new StateJS({ value: [] });
+
+        todoList.onChange((state) => {
+          $("#list").html("");
+          state.forEach((todo) => {
+            $("#list").append(`<li>${todo.value}</li>`);
+          });
+        });
+
+        $("form").on("submit", function (e) {
+          e.preventDefault();
+          if (input.get() !== "") {
+            todoList.set((state) => [...state, { value: input.get() }]);
+            input.set("");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
